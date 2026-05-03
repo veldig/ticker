@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { StatsModal } from './StatsModal'
 import { SettingsModal } from './SettingsModal'
 import { HelpModal } from './HelpModal'
 import { loadStats } from '../lib/storage'
+
+const HELP_SEEN_KEY = 'ticker_seen_help'
 
 export function Navbar() {
   const [statsOpen, setStatsOpen] = useState(false)
@@ -11,6 +13,18 @@ export function Navbar() {
 
   const streak = loadStats().currentStreak
 
+  // Auto-open help for first-time visitors
+  useEffect(() => {
+    if (!localStorage.getItem(HELP_SEEN_KEY)) {
+      setHelpOpen(true)
+    }
+  }, [])
+
+  function handleHelpClose() {
+    localStorage.setItem(HELP_SEEN_KEY, '1')
+    setHelpOpen(false)
+  }
+
   return (
     <>
       <header className="w-full border-b border-white/8 bg-[#0d0f12]/90 backdrop-blur-sm sticky top-0 z-40">
@@ -18,7 +32,7 @@ export function Navbar() {
 
           {/* Left — Help */}
           <button
-            onClick={() => setHelpOpen(true)}
+            onClick={() => { localStorage.setItem(HELP_SEEN_KEY, '1'); setHelpOpen(true) }}
             className="w-8 h-8 flex items-center justify-center text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer text-lg font-medium"
             aria-label="How to play"
           >
@@ -60,7 +74,7 @@ export function Navbar() {
 
       <StatsModal    open={statsOpen}    onClose={() => setStatsOpen(false)} />
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
-      <HelpModal     open={helpOpen}     onClose={() => setHelpOpen(false)} />
+      <HelpModal     open={helpOpen}     onClose={handleHelpClose} />
     </>
   )
 }

@@ -27,6 +27,12 @@ export function saveGame(game: SavedGame): void {
   } catch {}
 }
 
+export function clearSavedGame(): void {
+  try {
+    localStorage.removeItem(GAME_KEY)
+  } catch {}
+}
+
 // ── All-time stats ───────────────────────────────────────────────────────────
 
 export interface Stats {
@@ -87,7 +93,7 @@ export function recordResult(won: boolean, guessCount: number, puzzleDate: strin
 
 export function clearAllData(): void {
   try {
-    localStorage.removeItem(GAME_KEY)
+    clearSavedGame()
     localStorage.removeItem(STATS_KEY)
   } catch {}
 }

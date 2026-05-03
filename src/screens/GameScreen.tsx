@@ -9,6 +9,7 @@ import type { Stock } from '../types/stock'
 import { useGameState } from '../hooks/useGameState'
 import { useToast } from '../hooks/useToast'
 import { getPuzzleNumber } from '../lib/puzzle'
+import { getStockMatchRank } from '../lib/stockLookup'
 
 const MAX_GUESSES = 6
 
@@ -67,12 +68,13 @@ export function GameScreen() {
     debounceRef.current = setTimeout(() => {
       const q = value.toLowerCase()
       const matches = stocksData
-        .filter(s => s.ticker.toLowerCase().startsWith(q) || s.name.toLowerCase().includes(q))
+        .map(stock => ({ stock, rank: getStockMatchRank(stock, q) }))
+        .filter(({ rank }) => Number.isFinite(rank))
         .sort((a, b) => {
-          const aT = a.ticker.toLowerCase().startsWith(q)
-          const bT = b.ticker.toLowerCase().startsWith(q)
-          return aT === bT ? 0 : aT ? -1 : 1
+          if (a.rank !== b.rank) return a.rank - b.rank
+          return a.stock.ticker.localeCompare(b.stock.ticker)
         })
+        .map(({ stock }) => stock)
         .slice(0, 7)
       setSuggestions(matches)
     }, 150)

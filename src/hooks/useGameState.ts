@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from 'react'
 import type { GameState, GuessResult, Stock } from '../types/stock'
-import { stocksData } from '../data/stocks'
 import { getDailyStock, getPuzzleDate, getPuzzleNumber } from '../lib/puzzle'
 import { compareStocks, isWin } from '../lib/compare'
 import { loadGame, saveGame, recordResult } from '../lib/storage'
+import { canonicalizeTicker, findStockByQuery, normalizeSavedGuesses } from '../lib/stockLookup'
 
 const MAX_GUESSES = 6
 
@@ -17,7 +17,7 @@ interface UseGameStateReturn {
   clearError:         () => void
 }
 
-function initFromStorage(): {
+function initFromStorage(target: Stock): {
   guesses:            GuessResult[]
   gameState:          GameState
   isRestoredComplete: boolean
@@ -28,7 +28,7 @@ function initFromStorage(): {
   if (saved && saved.puzzleDate === today) {
     const isComplete = saved.result === 'won' || saved.result === 'lost'
     return {
-      guesses:            saved.guesses,
+      guesses:            normalizeSavedGuesses(saved.guesses, target),
       gameState:          saved.result as GameState,
       isRestoredComplete: isComplete,
     }
@@ -43,7 +43,7 @@ export function useGameState(): UseGameStateReturn {
 
   const [target] = useState<Stock>(getDailyStock)
 
-  const [{ guesses, gameState, isRestoredComplete }] = useState(initFromStorage)
+  const [{ guesses, gameState, isRestoredComplete }] = useState(() => initFromStorage(target))
   const [guessesState, setGuesses]     = useState<GuessResult[]>(guesses)
   const [gameStateVal, setGameState]   = useState<GameState>(gameState)
   const [errorMsg, setErrorMsg]        = useState<string | null>(null)
@@ -63,18 +63,14 @@ export function useGameState(): UseGameStateReturn {
     const q = query.trim()
     if (!q) return
 
-    const stock = stocksData.find(
-      s =>
-        s.ticker.toUpperCase() === q.toUpperCase() ||
-        s.name.toLowerCase()   === q.toLowerCase()
-    )
+    const stock = findStockByQuery(q)
 
     if (!stock) {
       setErrorMsg(`"${q}" not found — try a ticker or full company name`)
       return
     }
 
-    if (guessesState.some(g => g.stock.ticker === stock.ticker)) {
+    if (guessesState.some(g => canonicalizeTicker(g.stock.ticker) === stock.ticker)) {
       setErrorMsg(`${stock.ticker} already guessed`)
       return
     }

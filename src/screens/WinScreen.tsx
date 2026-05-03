@@ -49,8 +49,8 @@ export function WinScreen() {
   }
 
   return (
-    <main className="flex flex-col min-h-[calc(100vh-56px)] items-center justify-center px-4 py-8">
-      <div className="max-w-sm w-full space-y-4">
+    <main className="flex flex-col min-h-[calc(100dvh-56px)] items-center justify-center px-4 py-4 sm:py-8 overflow-y-auto">
+      <div className="max-w-sm w-full space-y-3 sm:space-y-4">
 
         {/* Victory header */}
         <div

@@ -16,8 +16,8 @@ export function MetricCell({ label, value, feedback, cellIndex = 0, animate = fa
   return (
     <div
       className={`
-        flex flex-col items-center justify-center gap-1
-        rounded-xl border p-2.5 sm:p-3 min-h-[68px] sm:min-h-[72px]
+        flex flex-col items-center justify-center gap-0.5 sm:gap-1
+        rounded-xl border p-2 sm:p-2.5 min-h-[60px] sm:min-h-[68px]
         ${style
           ? `${style.bg} ${style.border} ${style.text}`
           : 'bg-white/4 border-white/8 text-zinc-300'
@@ -27,10 +27,10 @@ export function MetricCell({ label, value, feedback, cellIndex = 0, animate = fa
         animation: `cellReveal 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both`,
       } : undefined}
     >
-      <span className="text-[9px] sm:text-[10px] font-semibold opacity-60 uppercase tracking-wider leading-tight text-center">
+      <span className="text-[8px] sm:text-[10px] font-semibold opacity-60 uppercase tracking-wider leading-tight text-center">
         {label}
       </span>
-      <span className="text-xs sm:text-sm font-bold leading-tight text-center">
+      <span className="text-[10px] sm:text-xs font-bold leading-tight text-center">
         {value}
       </span>
       {style && (

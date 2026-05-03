@@ -8,6 +8,19 @@ interface GuessRowProps {
   animate: boolean
 }
 
+const SECTOR_SHORT: Record<string, string> = {
+  'Technology':    'Tech',
+  'Healthcare':    'Health',
+  'Financial':     'Finance',
+  'Consumer':      'Consumer',
+  'Energy':        'Energy',
+  'Industrials':   'Industry',
+  'Real Estate':   'Real Est.',
+  'Utilities':     'Utilities',
+  'Materials':     'Materials',
+  'Communications':'Comms',
+}
+
 const CELLS = [
   { label: 'Sector',   key: 'sector'    as const },
   { label: 'Mkt Cap',  key: 'marketCap' as const },
@@ -19,7 +32,7 @@ export function GuessRow({ result, index, animate }: GuessRowProps) {
   const { stock, feedback } = result
 
   const values: Record<string, string> = {
-    sector:    stock.sector,
+    sector:    SECTOR_SHORT[stock.sector] ?? stock.sector,
     marketCap: formatMarketCap(stock.marketCap),
     pe:        formatPE(stock.pe),
     return5y:  formatReturn(stock.return5y),
@@ -40,7 +53,7 @@ export function GuessRow({ result, index, animate }: GuessRowProps) {
         <span className="text-zinc-500 text-xs truncate">{stock.name}</span>
       </div>
 
-      <div className="grid grid-cols-4 gap-1.5 sm:gap-2 pl-5">
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-2 pl-0 sm:pl-5">
         {CELLS.map((cell, cellIdx) => (
           <MetricCell
             key={cell.key}

@@ -55,13 +55,14 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       {/* Panel */}
       <div
         data-modal
-        className="relative w-full max-w-md bg-[#161a20] border border-white/10 rounded-2xl shadow-2xl"
+        className="relative w-full max-w-md bg-[#161a20] border border-white/10 rounded-2xl shadow-2xl flex flex-col max-h-[calc(100dvh-24px)]"
         style={{ animation: 'modalIn 0.25s cubic-bezier(0.34, 1.4, 0.64, 1) both' }}
         onClick={e => e.stopPropagation()}
       >
         <div ref={sentinelStart} tabIndex={-1} />
 
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/8">
+        {/* Header — always visible, never scrolls away */}
+        <div className="shrink-0 flex items-center justify-between px-5 py-4 border-b border-white/8">
           <h2 id="modal-title" className="text-base font-semibold text-white">{title}</h2>
           <button
             ref={firstFocusRef}
@@ -73,7 +74,8 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
           </button>
         </div>
 
-        <div className="px-5 py-5">{children}</div>
+        {/* Scrollable content */}
+        <div className="overflow-y-auto px-5 py-5">{children}</div>
 
         <div ref={sentinelEnd} tabIndex={-1} />
       </div>

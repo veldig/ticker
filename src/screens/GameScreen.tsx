@@ -266,7 +266,7 @@ export function GameScreen() {
                   autoCapitalize="characters"
                   spellCheck={false}
                   className={`
-                    w-full bg-white/6 border rounded-xl px-4 py-3 text-sm text-white
+                    w-full bg-white/6 border rounded-xl px-4 py-3 text-base text-white
                     placeholder-zinc-600 outline-none transition-all duration-150
                     ${shake ? 'animate-[shake_0.3s_ease-in-out]' : ''}
                     ${shake

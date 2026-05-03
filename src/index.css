@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* ── Keyframes ─────────────────────────────────────────────────────────────── */
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+@keyframes cellReveal {
+  0%   { opacity: 0; transform: scale(0.82) translateY(8px); }
+  65%  { transform: scale(1.04) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: #0d0f12;
+    color: #e8ecf0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    /* Fill the notch area with background */
+    background-attachment: fixed;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overscroll-behavior: none;
+  }
+
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Prevent 300ms tap delay on touch devices */
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  /* Minimum touch target size */
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent iOS font-size zoom on input focus */
+  input, textarea, select {
+    font-size: 16px;
+  }
+
+  /* Focus visible only for keyboard nav */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  :focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.7);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}

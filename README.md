@@ -1,73 +1,42 @@
-# React + TypeScript + Vite
+# Ticker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A daily stock market deduction game — think Wordle, but for equities.
 
-Currently, two official plugins are available:
+**[Play it live →](https://ticker-game.vercel.app)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## How it works
 
-## React Compiler
+Each day a new S&P 500 / NASDAQ stock is chosen. You have 6 guesses to identify it using feedback on four financial metrics:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Metric | Feedback |
+|---|---|
+| Sector | ✅ exact match / ❌ miss |
+| Market Cap | 🟩 exact · 🟧 within 10% · 🟥 too high/low |
+| P/E Ratio | 🟩 exact · 🟧 within 10% · 🟥 too high/low |
+| 5-Year Return | 🟩 exact · 🟧 within 10% · 🟥 too high/low |
 
-## Expanding the ESLint configuration
+A new puzzle drops at midnight UTC every day. Your streak and guess history are saved locally.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Daily puzzle seeded by date — same stock for every player worldwide
+- Autocomplete search across 110 stocks by ticker or company name
+- Color-coded metric feedback with animated reveal
+- Shareable emoji result grid
+- Streak tracking and guess distribution stats
+- Fully accessible (ARIA combobox, live regions, keyboard navigation)
+- Mobile-optimized with safe-area insets and iOS scroll locking
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **React 19** + **TypeScript** + **Vite**
+- **Tailwind CSS v4**
+- **React Router v7**
+- Deployed on **Vercel**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Local development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
